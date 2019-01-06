@@ -1,0 +1,26 @@
+{
+  "name": "serverless-crawler",
+  "version": "1.0.0",
+  "description": "## goals",
+  "main": "index.js",
+  "directories": {
+    "example": "example",
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "mocha --timeout 10000 './{,!(node_modules)/**/}*.spec.js'",
+    "test:watch": "mocha --grep @io --invert --timeout 10000 --watch './{,!(node_modules)/**/}*.spec.js'"
+  },
+  "author": "ani",
+  "license": "MIT",
+  "devDependencies": {
+    "mocha": "^5.2.0"
+  },
+  "dependencies": {
+    "ioredis": "^4.3.0",
+    "puppeteer": "^1.11.0",
+    "ramda": "^0.26.1",
+    "sinon": "^7.2.2",
+    "uuid": "^3.3.2"
+  }
+}
