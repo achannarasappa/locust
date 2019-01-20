@@ -32,10 +32,10 @@
 ## todo
 
 - queue functionality
-- fn entrypoint functionality
 - CLI
   - local bootstrap
   - job definition generator
+- fn entrypoint functionality
 
 ## job definition
 
