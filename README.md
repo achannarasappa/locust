@@ -4,17 +4,13 @@ Distributed serverless web crawling/web scraping with support for js execution, 
 
 ## Quick Start
 
-1. Start up redis and browserless
-    ```sh
-    cli boostrap
-    ```
 1. Generate a job definition
     ```sh
-    cli generate job-definition
+    cli generate my-job.js
     ```
 1. Start the job
     ```
-    cli start job-definition
+    cli run --follow-links --bootstrap my-job.js
     ```
 
 ## Reference

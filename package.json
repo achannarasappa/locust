@@ -2,7 +2,10 @@
   "name": "serverless-crawler",
   "version": "1.0.0",
   "description": "Distributed serverless web crawling/web scraping with support for js execution, proxying, and autoscaling",
-  "main": "index.js",
+  "main": "lib/fn.js",
+  "bin": {
+    "cli": "bin/cli.js"
+  },
   "directories": {
     "example": "example",
     "lib": "lib"
@@ -20,6 +23,7 @@
   "dependencies": {
     "ioredis": "^4.3.0",
     "puppeteer": "^1.11.0",
-    "ramda": "^0.26.1"
+    "ramda": "^0.26.1",
+    "yargs": "^12.0.5"
   }
 }
