@@ -31,11 +31,17 @@
 
 ## todo
 
-- queue functionality
 - CLI
-  - local bootstrap
+  - run single local job
+  - run local jobs
+    - relies on redis running
+  - run local bootstrap
+    - start redis, browserless
   - job definition generator
-- fn entrypoint functionality
+- fn entrypoint functional testing
+- store
+- validation
+- terraform example for AWS
 
 ## job definition
 
@@ -54,7 +60,7 @@ const jobDefinition = {
     title: $('title')
   }),
   // call to start a crawl job
-  spawn: (job) => {
+  start: (job) => {
     
       console.log('done!');
     
