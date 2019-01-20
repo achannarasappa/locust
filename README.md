@@ -10,7 +10,7 @@ Distributed serverless web crawling/web scraping with support for js execution, 
     ```
 1. Start the job
     ```
-    cli run --follow-links --bootstrap my-job.js
+    cli run --bootstrap my-job.js
     ```
 
 ## Reference

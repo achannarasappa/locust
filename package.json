@@ -18,6 +18,7 @@
   "license": "MIT",
   "devDependencies": {
     "mocha": "^5.2.0",
+    "prettyjson": "^1.2.1",
     "sinon": "^7.2.3"
   },
   "dependencies": {
