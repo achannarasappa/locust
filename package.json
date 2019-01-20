@@ -1,7 +1,7 @@
 {
   "name": "serverless-crawler",
   "version": "1.0.0",
-  "description": "## goals",
+  "description": "Distributed serverless web crawling/web scraping with support for js execution, proxying, and autoscaling",
   "main": "index.js",
   "directories": {
     "example": "example",
@@ -14,13 +14,12 @@
   "author": "Ani Channarasappa",
   "license": "MIT",
   "devDependencies": {
-    "mocha": "^5.2.0"
+    "mocha": "^5.2.0",
+    "sinon": "^7.2.3"
   },
   "dependencies": {
     "ioredis": "^4.3.0",
     "puppeteer": "^1.11.0",
-    "ramda": "^0.26.1",
-    "sinon": "^7.2.2",
-    "uuid": "^3.3.2"
+    "ramda": "^0.26.1"
   }
 }

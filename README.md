@@ -1,6 +1,6 @@
 # serverless-crawler
 
-Framework for distributed serverless web crawling/web scraping with support for client-side js execution, proxying, and autoscaling
+Distributed serverless web crawling/web scraping with support for js execution, proxying, and autoscaling
 
 ## Quick Start
 
