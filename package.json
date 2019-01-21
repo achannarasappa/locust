@@ -19,9 +19,11 @@
   "devDependencies": {
     "mocha": "^5.2.0",
     "prettyjson": "^1.2.1",
+    "shelljs": "^0.8.3",
     "sinon": "^7.2.3"
   },
   "dependencies": {
+    "inquirer": "^6.2.1",
     "ioredis": "^4.3.0",
     "puppeteer": "^1.11.0",
     "ramda": "^0.26.1",

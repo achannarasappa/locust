@@ -9,7 +9,7 @@ Distributed serverless web crawling/web scraping with support for js execution, 
     cli generate my-job.js
     ```
 1. Start the job
-    ```
+    ```sh
     cli run --bootstrap my-job.js
     ```
 
