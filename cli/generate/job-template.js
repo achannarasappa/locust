@@ -34,30 +34,27 @@ const generateBefore = (optionalHooks) => {
 
 };
 
-const generateExtractFeilds = (extractFields) => {
-
-  if (!extractFields.length)
-    return `\n\n`;
-
-  return extractFields.map(({ cssPath, label }) => `    '${label}': await $('${cssPath}'),`).join('\n') + '\n'
-
-};
-
 const generateExtract = (optionalHooks, extractFields) => {
 
   if (!optionalHooks.includes('extract'))
     return false;
 
+  if (!extractFields.length)
+    return [
+      `  extract: async ($, browser) => ({`,
+      `  /**`,
+      `  * Function to extract data from the page while crawling`,
+      `  * https://luxa.io/docs/job#extract`,
+      `  * `,
+      `  * @example`,
+      `  * title: await $('title')`,
+      `  */\n\n\n`,
+      `  }),`,
+    ].join('\n');
+
   return [
     `  extract: async ($, browser) => ({`,
-    `  /**`,
-    `  * Function to extract data from the page while crawling`,
-    `  * https://luxa.io/docs/job#extract`,
-    `  * `,
-    `  * @example`,
-    `  * title: await $('title')`,
-    `  */\n`,
-    generateExtractFeilds(extractFields),
+    extractFields.map(({ cssPath, label }) => `    '${label}': await $('${cssPath}'),`).join('\n'),
     `  }),`,
   ].join('\n');
 
