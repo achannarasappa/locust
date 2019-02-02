@@ -34,20 +34,30 @@ const generateBefore = (optionalHooks) => {
 
 };
 
-const generateExtract = (optionalHooks) => {
+const generateExtractFeilds = (extractFields) => {
+
+  if (!extractFields.length)
+    return `\n\n`;
+
+  return extractFields.map(({ cssPath, label }) => `    '${label}': await $('${cssPath}'),`).join('\n') + '\n'
+
+};
+
+const generateExtract = (optionalHooks, extractFields) => {
 
   if (!optionalHooks.includes('extract'))
     return false;
 
   return [
-    `  extract: ($, browser) => ({`,
+    `  extract: async ($, browser) => ({`,
     `  /**`,
     `  * Function to extract data from the page while crawling`,
     `  * https://luxa.io/docs/job#extract`,
     `  * `,
     `  * @example`,
-    `  * title: $('title')`,
-    `  */\n\n\n`,
+    `  * title: await $('title')`,
+    `  */\n`,
+    generateExtractFeilds(extractFields),
     `  }),`,
   ].join('\n');
 
@@ -73,18 +83,19 @@ const generateFilter = (filter, url) => {
 
   if (filter === 'yes')
     return [
-    `  filter: {`
-    `    allowList: [],`
-    `    blockList: [],`
-    `  },`
+    `  filter: {`,
+    `    allowList: [],`,
+    `    blockList: [],`,
+    `  },`,
     ].join('\n');
+  
 
   if (filter === 'yes_only_domain')
     return [
     `  filter: {`,
     `    allowList: [`,
-    `      '${(new URL(url)).hostname}',`
-    `    ],`
+    `      '${new URL(url).hostname}',`,
+    `    ],`,
     `    blockList: [],`,
     `  },`,
     ].join('\n');
@@ -122,6 +133,7 @@ const template = ({
   name,
   url,
   optionalHooks,
+  extractFields,
   concurrencyLimit,
   depth,
   filter,
@@ -133,7 +145,7 @@ const template = ({
     `module.exports = {`,
     generateBeforeAll(optionalHooks),
     generateBefore(optionalHooks),
-    generateExtract(optionalHooks),
+    generateExtract(optionalHooks, extractFields),
     generateStart(),
     `  url: '${url}',`,
     `  config: {`,

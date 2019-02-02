@@ -4,6 +4,7 @@ const R = require('ramda');
 const { writeFileSync } = require('fs');
 const { executeSingleJob } = require('../lib/fn');
 const template = require('./generate/job-template');
+const { promptJobDetails } = require('./generate/prompt');
 
 const _filterJobResult = (jobResult, includeHtml, includeLinks, includeCookies) => {
   
@@ -55,8 +56,9 @@ const start = async (filePath, bootstrap) => {
 
 };
 
-const generateJobFile = (answers) => {
+const generateJobFile = async () => {
 
+  const answers = await promptJobDetails();
   const jobFileContents = template(answers);
 
   writeFileSync(`./${answers.name}.js`, jobFileContents)
