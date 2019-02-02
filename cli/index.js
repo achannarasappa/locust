@@ -1,7 +1,9 @@
 const prettyjson = require('prettyjson');
-const { executeSingleJob } = require('../lib/fn');
-const R = require('ramda');
 const shell = require('shelljs');
+const R = require('ramda');
+const { writeFileSync } = require('fs');
+const { executeSingleJob } = require('../lib/fn');
+const template = require('./generate/job-template');
 
 const _filterJobResult = (jobResult, includeHtml, includeLinks, includeCookies) => {
   
@@ -53,8 +55,17 @@ const start = async (filePath, bootstrap) => {
 
 };
 
+const generateJobFile = (answers) => {
+
+  const jobFileContents = template(answers);
+
+  writeFileSync(`./${answers.name}.js`, jobFileContents)
+
+};
+
 module.exports = {
   run,
   start,
+  generateJobFile,
   _filterJobResult,
 }
