@@ -51,7 +51,7 @@ yargs
         .alias('b', 'bootstrap')
         .demandCommand(1, 'A file path to a job file is required')
         .usage('cli start <path_to_file>')
-        .example('cli start job.js', 'Runs a single job and stops after the first page')
+        .example('cli start job.js', 'Starts a job')
         .example('cli start -b job.js', 'Starts redis and browserless containers if they are not already running')
         .help()
 

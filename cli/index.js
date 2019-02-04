@@ -2,18 +2,18 @@ const prettyjson = require('prettyjson');
 const shell = require('shelljs');
 const R = require('ramda');
 const { writeFileSync } = require('fs');
-const { executeSingleJob } = require('../lib/fn');
+const { executeSingleJob, execute } = require('../lib/fn');
 const template = require('./generate/job-template');
 const { promptJobDetails } = require('./generate/prompt');
 
-const _filterJobResult = (jobResult, includeHtml, includeLinks, includeCookies) => {
+const _filterJobResult = (jobResult, includeHtml, includeLinks, includeCookies, includeResponse) => {
   
   if (includeHtml)
     return R.path([ 'response', 'body' ], jobResult);
   
   return R.pipe(
     R.pick([
-      'response',
+      includeResponse ? 'response' : undefined,
       'data',
       includeCookies ? 'cookies' : undefined,
       includeLinks ? 'links' : undefined,
@@ -27,7 +27,7 @@ const run = async (filePath, includeHtml, includeLinks, includeCookies) => {
 
   const jobDefinition = require(`${__dirname}/../${filePath}`);
   const jobResult = await executeSingleJob(jobDefinition);
-  const jobResultFiltered = _filterJobResult(jobResult, includeHtml, includeLinks, includeCookies)
+  const jobResultFiltered = _filterJobResult(jobResult, includeHtml, includeLinks, includeCookies, true)
 
   return console.log(prettyjson.render(jobResultFiltered));
 

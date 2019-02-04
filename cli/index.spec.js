@@ -22,17 +22,44 @@ describe('cli', () => {
           'http://test.com/1'
         ]
       };
-      const output = _filterJobResult(inputJobResult, false, false, false);
+      const output = _filterJobResult(inputJobResult, false, false, false, false);
       const expected = {
-        response: {
-          url: 'http://test.com/1'
-        },
         data: {
           test_key: 'text_value'
         },
       };
 
       assert.deepStrictEqual(output, expected)
+    
+    });
+
+    context('when include response flag is set', () => {
+    
+      it('includes resonse', () => {
+      
+        const inputJobResult = {
+          response: {
+            url: 'http://test.com/1',
+            body: 'test_body'
+          },
+          data: {
+            test_key: 'text_value'
+          },
+          cookies: {
+            'x-test': 'cookie'
+          },
+          links: [
+            'http://test.com/1'
+          ]
+        };
+        const output = _filterJobResult(inputJobResult, false, false, false, true);
+        const expected = {
+          url: 'http://test.com/1',
+        };
+
+        assert.deepStrictEqual(output.response, expected)
+      
+      });
     
     });
 
@@ -56,20 +83,12 @@ describe('cli', () => {
             'http://test.com/1'
           ]
         };
-        const output = _filterJobResult(inputJobResult, false, true, false);
-        const expected = {
-          response: {
-            url: 'http://test.com/1'
-          },
-          data: {
-            test_key: 'text_value'
-          },
-          links: [
-            'http://test.com/1'
-          ]
-        };
+        const output = _filterJobResult(inputJobResult, false, true, false, false);
+        const expected = [
+          'http://test.com/1'
+        ];
 
-        assert.deepStrictEqual(output, expected)
+        assert.deepStrictEqual(output.links, expected)
       
       });
     
@@ -78,7 +97,6 @@ describe('cli', () => {
     context('when include cookies flag is set', () => {
     
       it('includes cookies', () => {
-      
       
         const inputJobResult = {
           response: {
@@ -95,20 +113,12 @@ describe('cli', () => {
             'http://test.com/1'
           ]
         };
-        const output = _filterJobResult(inputJobResult, false, false, true);
+        const output = _filterJobResult(inputJobResult, false, false, true, false);
         const expected = {
-          response: {
-            url: 'http://test.com/1'
-          },
-          data: {
-            test_key: 'text_value'
-          },
-          cookies: {
-            'x-test': 'cookie'
-          },
+          'x-test': 'cookie'
         };
 
-        assert.deepStrictEqual(output, expected)
+        assert.deepStrictEqual(output.cookies, expected)
       
       });
     
@@ -133,7 +143,7 @@ describe('cli', () => {
             'http://test.com/1'
           ]
         };
-        const output = _filterJobResult(inputJobResult, true, true, false);
+        const output = _filterJobResult(inputJobResult, true, true, false, false);
         const expected = 'test_body';
   
         assert.deepStrictEqual(output, expected)
