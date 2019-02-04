@@ -156,7 +156,7 @@ describe('cli', () => {
 
   describe('start', () => {
   
-    it('starts a job definition');
+    it('starts a job');
     
     context('when the boostrap option is set', () => {
     

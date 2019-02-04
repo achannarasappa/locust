@@ -61,7 +61,7 @@ const generateExtract = (optionalHooks, extractFields) => {
 };
 
 const generateStart = () => ([
-  `  start: async (job) => ({`,
+  `  start: async (job) => {`,
   `  /**`,
   `  * Callback to initiate this job on the serverless provider`,
   `  * https://luxa.io/docs/job#start`,
@@ -70,7 +70,7 @@ const generateStart = () => ([
   `  * const lambda = new AWS.Lambda();`,
   `  * await lambda.invoke({ FunctionName: 'myScrapeJob' }).promise();`,
   `  */\n\n\n`,
-  `  }),`,
+  `  },`,
 ].join('\n'))
 
 const generateFilter = (filter, url) => {
