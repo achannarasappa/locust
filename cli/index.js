@@ -56,6 +56,12 @@ const start = async (filePath, bootstrap) => {
 
 };
 
+const stop = async () => {
+
+  shell.exec('docker-compose -f ./cli/start/docker-compose.yml down')
+
+}
+
 const generateJobFile = async () => {
 
   const answers = await promptJobDetails();
@@ -68,6 +74,7 @@ const generateJobFile = async () => {
 module.exports = {
   run,
   start,
+  stop,
   generateJobFile,
   _filterJobResult,
 }

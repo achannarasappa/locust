@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 const yargs = require('yargs');
-const { run, start, generateJobFile } = require('../cli');
+const { run, start, stop, generateJobFile } = require('../cli');
 
 yargs
   .scriptName('cli')
@@ -58,6 +58,22 @@ yargs
     }, async ({ _: [ cmd, filePath ], bootstrap }) => {
       
       return await start(filePath, bootstrap);
+  
+    })
+  
+  })
+  .command('stop', 'Stop running jobs and stop redis and browserless containers', (yargs) => {
+
+    return yargs
+    .command('*', false, (yargs) => {
+
+      return yargs
+        .usage('cli stop')
+        .help()
+
+    }, async ({ _: [ cmd, filePath ], bootstrap }) => {
+      
+      return await stop(filePath, bootstrap);
   
     })
   
