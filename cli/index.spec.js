@@ -1,4 +1,4 @@
-const assert = require('assert');
+const { assert } = require('chai');
 const { _filterJobResult } = require('./index');
 
 describe('cli', () => {
@@ -29,7 +29,7 @@ describe('cli', () => {
         },
       };
 
-      assert.deepStrictEqual(output, expected)
+      assert.deepEqual(output, expected)
     
     });
 
@@ -57,7 +57,7 @@ describe('cli', () => {
           url: 'http://test.com/1',
         };
 
-        assert.deepStrictEqual(output.response, expected)
+        assert.deepEqual(output.response, expected)
       
       });
     
@@ -88,7 +88,7 @@ describe('cli', () => {
           'http://test.com/1'
         ];
 
-        assert.deepStrictEqual(output.links, expected)
+        assert.deepEqual(output.links, expected)
       
       });
     
@@ -118,7 +118,7 @@ describe('cli', () => {
           'x-test': 'cookie'
         };
 
-        assert.deepStrictEqual(output.cookies, expected)
+        assert.deepEqual(output.cookies, expected)
       
       });
     
@@ -146,7 +146,7 @@ describe('cli', () => {
         const output = _filterJobResult(inputJobResult, true, true, false, false);
         const expected = 'test_body';
   
-        assert.deepStrictEqual(output, expected)
+        assert.deepEqual(output, expected)
       
       });
     

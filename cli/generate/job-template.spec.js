@@ -2,7 +2,7 @@ const template = require('./job-template');
 const { assert } = require('chai');
 const R = require('ramda');
 
-describe.only('job-template', () => {
+describe('job-template', () => {
 
   const baseInput = {
     name: 'test-job',
