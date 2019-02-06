@@ -23,6 +23,7 @@
     "sinon": "^7.2.3"
   },
   "dependencies": {
+    "chai": "^4.2.0",
     "inquirer": "^6.2.1",
     "ioredis": "^4.3.0",
     "puppeteer": "^1.11.0",
