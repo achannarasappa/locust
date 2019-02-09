@@ -24,12 +24,26 @@ describe('cli', () => {
       };
       const output = _filterJobResult(inputJobResult, false, false, false, false);
       const expected = {
+        url: 'http://test.com/1',
         data: {
           test_key: 'text_value'
         },
       };
 
       assert.deepEqual(output, expected)
+    
+    });
+
+    context('when an invalid result is returned', () => {
+    
+      it('passes the result through', () => {
+      
+        const input = new Error('test');
+        const output = _filterJobResult(input, false, false, false, false);
+      
+        assert.deepEqual(output, input)
+      
+      });
     
     });
 
@@ -162,7 +176,7 @@ describe('cli', () => {
     
       it('overwrites the start hook with a shell command');
 
-      it('overwrites the connection details with the bootstraped redis and brwoserless');
+      it('overwrites the connection details with the bootstraped redis and browserless');
       
       context('when docker is not installed', () => {
       
@@ -184,6 +198,11 @@ describe('cli', () => {
     
     });
     
+    context('when the reset option is set', () => {
+    
+      it('resets the queue state');
+    
+    });
   
   });
 

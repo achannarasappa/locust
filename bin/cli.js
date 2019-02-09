@@ -48,16 +48,21 @@ yargs
           describe: 'Start redis and browserless Docker containers if not already available',
           default: false,
         })
+        .option('reset', {
+          describe: 'Reset queue state',
+          default: false,
+        })
         .alias('b', 'bootstrap')
+        .alias('r', 'reset')
         .demandCommand(1, 'A file path to a job file is required')
         .usage('cli start <path_to_file>')
         .example('cli start job.js', 'Starts a job')
         .example('cli start -b job.js', 'Starts redis and browserless containers if they are not already running')
         .help()
 
-    }, async ({ _: [ cmd, filePath ], bootstrap }) => {
+    }, async ({ _: [ cmd, filePath ], bootstrap, reset }) => {
       
-      return await start(filePath, bootstrap);
+      return await start(filePath, bootstrap, reset);
   
     })
   
