@@ -11,8 +11,10 @@
     "lib": "lib"
   },
   "scripts": {
-    "test": "mocha --exit --grep @io --invert --timeout 10000 './{,!(node_modules)/**/}*.spec.js'",
-    "test:watch": "mocha --grep @io --invert --timeout 10000 --watch './{,!(node_modules)/**/}*.spec.js'"
+    "test": "mocha --exit --grep @remote --invert --timeout 10000 './{,!(node_modules)/**/}*.spec.js'",
+    "test:start": "docker-compose -f ./test/docker-compose.yml up -d",
+    "test:stop": "docker-compose -f ./test/docker-compose.yml down",
+    "test:watch": "npm run test -- --watch"
   },
   "author": "Ani Channarasappa",
   "license": "MIT",
