@@ -3,7 +3,7 @@ const shell = require('shelljs');
 const R = require('ramda');
 const Redis = require('ioredis');
 const { writeFileSync } = require('fs');
-const { executeSingleJob, execute } = require('../lib/fn');
+const { execute } = require('../lib/fn');
 const queue = require('../lib/queue');
 const template = require('./generate/job-template');
 const { promptJobDetails } = require('./generate/prompt');
@@ -41,10 +41,25 @@ const _filterJobResult = (jobResult, includeHtml, includeLinks, includeCookies, 
   
 }
 
+const _executeSingleJob = async (jobDefinition, firstRun = true) => {
+
+  const browser = await puppeteer.launch();
+  const state = {
+    firstRun: firstRun ? 1 : 0
+  };
+
+  const jobResult = await runJob(browser, jobDefinition, state);
+
+  await browser.close();
+
+  return jobResult;
+
+};
+
 const run = async (filePath, includeHtml, includeLinks, includeCookies) => {
 
   const jobDefinition = require(`${__dirname}/../${filePath}`);
-  const jobResult = await executeSingleJob(jobDefinition);
+  const jobResult = await _executeSingleJob(jobDefinition);
   const jobResultFiltered = _filterJobResult(jobResult, includeHtml, includeLinks, includeCookies, true)
 
   return console.log(prettyjson.render(jobResultFiltered));

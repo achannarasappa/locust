@@ -41,5 +41,4 @@ A reference archtecture for a crawling system based on this project
 
 ## Concepts
 
-* store - user defined state shared amongst all functions
 * job definition - a javascript object defining a job to crawl a given site. also serves as the input into the crawler
