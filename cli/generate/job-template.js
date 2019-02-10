@@ -104,7 +104,6 @@ const generateFilter = (filter, url) => {
     `  },`,
     ].join('\n');
   
-
   if (filter === 'yes_only_domain')
     return [
     `  filter: {`,
@@ -112,6 +111,13 @@ const generateFilter = (filter, url) => {
     `      '${new URL(url).hostname}',`,
     `    ],`,
     `    blockList: [],`,
+    `  },`,
+    ].join('\n');
+
+  if (filter === 'yes_function')
+    return [
+    `  filter: (links) => {`,
+    `    return links;`,
     `  },`,
     ].join('\n');
 

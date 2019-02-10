@@ -228,6 +228,25 @@ describe('job-template', () => {
         });
       
       });
+
+      context('when the yes with domain option is selected', () => {
+      
+        it('includes boilerplate for an allowlist with the hostname for the provided url set', () => {
+        
+          const input = R.mergeRight(
+            baseInput,
+            {
+              filter: 'yes_function'
+            }
+          );
+          const output = template(input);
+          const expected = `filter: (links) =>`;
+          
+          assert.include(output, expected)
+        
+        });
+      
+      });
     
     });
 

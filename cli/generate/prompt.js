@@ -111,6 +111,10 @@ const promptJobDetails = async () => {
             name: 'yes, only from the initial domain',
             value: 'yes_only_domain',
           },
+          {
+            name: 'yes, using a function',
+            value: 'yes_function',
+          },
         ],
         default: 'no'
       },
