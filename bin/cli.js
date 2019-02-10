@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 const yargs = require('yargs');
-const { run, start, stop, generateJobFile } = require('../cli');
+const { run, start, stop, generateJobFile, validateJobFile } = require('../cli');
 
 yargs
   .scriptName('cli')
@@ -85,12 +85,25 @@ yargs
   })
   .command('generate', 'generate a job definition through a series of prompts', (yargs) => yargs, async () => {
 
-      return await generateJobFile();
+    return await generateJobFile();
 
   })
   .command('validate', 'validate a job definition', (yargs) => {
+
+    return yargs
+    .command('*', false, (yargs) => {
+
+      return yargs
+        .demandCommand(1, 'A file path to a job file is required')
+        .usage('cli validate <path_to_file>')
+        .example('cli validate job.js', 'Validates a job and outputs any issues')
+        .help()
+
+    }, async ({ _: [ cmd, filePath ] }) => {
+      
+      return await validateJobFile(filePath);
   
-    console.log('run validator');
+    })
   
   })
   .alias('v', 'version')

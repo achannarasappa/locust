@@ -4,6 +4,7 @@ const R = require('ramda');
 const Redis = require('ioredis');
 const { writeFileSync } = require('fs');
 const { execute } = require('../lib/fn');
+const { validate } = require('../lib/job');
 const queue = require('../lib/queue');
 const template = require('./generate/job-template');
 const { promptJobDetails } = require('./generate/prompt');
@@ -129,10 +130,29 @@ const generateJobFile = async () => {
 
 };
 
+const validateJobFile = async (filePath) => {
+
+  const jobDefinition = require(`${__dirname}/../${filePath}`);
+
+  try {
+
+    await validate(jobDefinition);
+
+    console.log('Job file is valid');
+
+  } catch (e) {
+
+    console.log(prettyjson.render(e.details));
+
+  }
+
+};
+
 module.exports = {
   run,
   start,
   stop,
   generateJobFile,
+  validateJobFile,
   _filterJobResult,
 }
