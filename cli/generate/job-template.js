@@ -34,6 +34,24 @@ const generateBefore = (optionalHooks) => {
 
 };
 
+const generateAfter = (optionalHooks) => {
+
+  if (!optionalHooks.includes('after'))
+    return false;
+
+  return [
+    `  after: (jobResult, snapshot, stopFn => {`,
+    `  /**`,
+    `  * Add actions to be run after each job completes`,
+    `  * https://luxa.io/docs/job#after`,
+    `  * `,
+    `  * @example after 10 pages are completed, stop the queue`,
+    `  */\n\n\n`,
+    `  },`,
+  ].join('\n');
+
+};
+
 const generateExtract = (optionalHooks, extractFields) => {
 
   if (!optionalHooks.includes('extract'))
@@ -142,6 +160,7 @@ const template = ({
     `module.exports = {`,
     generateBeforeAll(optionalHooks),
     generateBefore(optionalHooks),
+    generateAfter(optionalHooks),
     generateExtract(optionalHooks, extractFields),
     generateStart(),
     `  url: '${url}',`,

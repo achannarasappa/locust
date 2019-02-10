@@ -69,7 +69,7 @@ const promptJobDetails = async () => {
       type: 'checkbox',
       name: 'optionalHooks',
       message: 'Select optional lifecycle hooks',
-      choices: ['beforeAll', 'before', 'extract'],
+      choices: ['beforeAll', 'before', 'extract', 'after'],
     }
   ])
 

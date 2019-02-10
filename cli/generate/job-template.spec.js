@@ -95,6 +95,27 @@ describe('job-template', () => {
     
     });
 
+    context('when the after option is set', () => {
+    
+      it('includes a after function with help text', () => {
+      
+        const input = R.mergeRight(
+          baseInput,
+          {
+            optionalHooks: [
+              'after'
+            ],
+          }
+        );
+        const output = template(input);
+        const expected = `after: (`;
+        
+        assert.include(output, expected)
+      
+      });
+    
+    });
+
     context('when the extract option is set', () => {
     
       context('when there are no fields are selected for extraction', () => {
