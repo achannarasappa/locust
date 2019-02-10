@@ -23,7 +23,7 @@ describe('job-template', () => {
       const output = template(baseInput);
       const expected = [
         'module.exports = {',
-        '  start: async (job) => {',
+        '  start: async () => {',
         '  /**',
         '  * Callback to initiate this job on the serverless provider',
         '  * https://luxa.io/docs/job#start',

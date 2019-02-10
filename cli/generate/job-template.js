@@ -4,7 +4,7 @@ const generateBeforeAll = (optionalHooks) => {
     return false;
 
   return [
-    `  beforeAll: (browser, store) => {`,
+    `  beforeAll: (browser, snapshot) => {`,
     `  /**`,
     `  * Add actions to be run once before the crawl starts`,
     `  * https://luxa.io/docs/job#beforeAll`,
@@ -22,7 +22,7 @@ const generateBefore = (optionalHooks) => {
     return false;
 
   return [
-    `  before: (page, store, terminate) => {`,
+    `  before: (page, snapshot) => {`,
     `  /**`,
     `  * Add actions to be run before each job starts`,
     `  * https://luxa.io/docs/job#before`,
@@ -61,7 +61,7 @@ const generateExtract = (optionalHooks, extractFields) => {
 };
 
 const generateStart = () => ([
-  `  start: async (job) => {`,
+  `  start: async () => {`,
   `  /**`,
   `  * Callback to initiate this job on the serverless provider`,
   `  * https://luxa.io/docs/job#start`,
