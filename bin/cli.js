@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 const yargs = require('yargs');
-const { run, start, stop, generateJobFile, validateJobFile } = require('../cli');
+const { run, start, stop, info, generateJobFile, validateJobFile } = require('../cli');
 
 yargs
   .scriptName('cli')
@@ -49,7 +49,7 @@ yargs
           default: false,
         })
         .option('reset', {
-          describe: 'Reset queue state',
+          describe: 'Reset queue state before starting',
           default: false,
         })
         .alias('b', 'bootstrap')
@@ -102,6 +102,26 @@ yargs
     }, async ({ _: [ cmd, filePath ] }) => {
       
       return await validateJobFile(filePath);
+  
+    })
+  
+  })
+  .command('info', 'information on queue state and jobs in each status', (yargs) => {
+
+    return yargs
+    .command('*', false, (yargs) => {
+
+      return yargs
+        .demandCommand(1, 'A file path to a job file is required')
+        .usage('cli info')
+        .example('cli info', 'snapshot of current queue state')
+        .help()
+
+    }, async ({ _: [ cmd, filePath ] }) => {
+      
+      console.log(cmd);
+      
+      return await info(filePath);
   
     })
   

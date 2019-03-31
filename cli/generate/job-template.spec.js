@@ -26,7 +26,7 @@ describe('job-template', () => {
         '  start: async () => {',
         '  /**',
         '  * Callback to initiate this job on the serverless provider',
-        '  * https://luxa.io/docs/job#start',
+        '  * https://locust.dev/docs/job#start',
         '  * ',
         '  * @example',
         '  * const lambda = new AWS.Lambda();',
