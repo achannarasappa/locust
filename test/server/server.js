@@ -2,8 +2,8 @@ const Hapi = require('@hapi/hapi');
 const Vision = require('@hapi/vision');
 const { readFileSync } = require('fs');
 
-const MAX_EXTRA_LATENCY = 200;
-const MIN_EXTRA_LATENCY = 100;
+const MAX_EXTRA_LATENCY = 1000;
+const MIN_EXTRA_LATENCY = 500;
 
 const addRoutes = async (server) => {
 
@@ -26,9 +26,7 @@ const addRoutes = async (server) => {
           title,
           links,
           depth,
-        })), Math.floor(Math.random() * (MAX_EXTRA_LATENCY - MIN_EXTRA_LATENCY + 1) + MIN_EXTRA_LATENCY))
-
-        
+        })), Math.floor(Math.random() * (MAX_EXTRA_LATENCY - MIN_EXTRA_LATENCY + 1) + MIN_EXTRA_LATENCY));
 
       })
     });

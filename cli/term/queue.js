@@ -1,6 +1,6 @@
 const queue = require('../../lib/queue');
 
-const refreshQueue = async (redis, jobDefinition, renderer) => {
+const refreshQueue = (redis, jobDefinition, renderer) => {
 
   return setInterval(async () => {
 

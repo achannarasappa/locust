@@ -4,11 +4,13 @@ const R = require('ramda');
 const Redis = require('ioredis');
 const { writeFileSync } = require('fs');
 const moment = require('moment');
-const Spinner = require('./spinner');
 const { execute } = require('../../lib/fn');
 const { filterJobResult } = require('../util');
 const queue = require('../../lib/queue');
 const { QueueError } = require('../../lib/error');
+const { refreshQueue } = require('../term/queue');
+const { start: startTerminal } = require('../term');
+const { render: renderTerminal } = require('../term/summary');
 
 const _bootstrap = () => {
 
@@ -51,33 +53,40 @@ const _getResults = async (redisDbResult) =>
   .then(R.map(JSON.parse))
   .then(R.map((jobResult) => filterJobResult(jobResult, false, true, false, false)))
 
-const _executeWithProgressReporting = async (redisDbResult, jobDefinition) => {
+const _executeWithProgressReporting = async (redisDbResult, jobDefinition, renderer) => {
           
-  const spinner = (new Spinner('Starting job')).start();
+  const jobSummaryLine = renderer.createJobSummary();
+  jobSummaryLine.start();
   const jobDefinitionOverride = R.mergeRight(
     jobDefinition, 
     {
-      start: () => _executeWithProgressReporting(redisDbResult, jobDefinitionOverride),
+      start: () => _executeWithProgressReporting(redisDbResult, jobDefinitionOverride, renderer),
       beforeAll: (browser, snapshot, jobData) => {
 
         if (!jobDefinition.beforeAll)
           return;
 
-        spinner.status = `Running`;
-        spinner.url = jobData.url;
-        spinner.text = `beforeAll hook`;
+        jobSummaryLine.update({
+          status: `Running`,
+          url: jobData.url,
+          text: `beforeAll hook`,
+        })
         return jobDefinition.beforeAll(browser, snapshot, jobData);
       },
       before: (page, snapshot, jobData) => {
 
-        spinner.status = `Running`;
+        jobSummaryLine.update({
+          status: `Running`,
+        })
 
         if (!jobDefinition.before)
           return;
 
-        spinner.status = `Running`;
-        spinner.url = jobData.url;
-        spinner.text = `before hook`;
+        jobSummaryLine.update({
+          status: `Running`,
+          url: jobData.url,
+          text: `beforeAll hook`,
+        })
         return jobDefinition.before(page, snapshot, jobData);
       },
       extract: ($, browser, jobData) => {
@@ -85,9 +94,11 @@ const _executeWithProgressReporting = async (redisDbResult, jobDefinition) => {
         if (!jobDefinition.extract)
           return;
 
-        spinner.status = `Running`;
-        spinner.url = jobData.url;
-        spinner.text = `extract hook`;
+        jobSummaryLine.update({
+          status: `Running`,
+          url: jobData.url,
+          text: `extract hook`,
+        })
         return jobDefinition.extract($, browser, jobData);
       },
       after: (jobResult, snapshot, stopQueue) => {
@@ -95,9 +106,11 @@ const _executeWithProgressReporting = async (redisDbResult, jobDefinition) => {
         if (!jobDefinition.after)
           return
 
-        spinner.status = `Running`;
-        spinner.url = jobResult.response.url;
-        spinner.text = `after hook`;
+        jobSummaryLine.update({
+          status: `Running`,
+          url: jobResult.response.url,
+          text: `after hook`,
+        })
         return jobDefinition.after(jobResult, snapshot, stopQueue);
       },
     }
@@ -107,18 +120,22 @@ const _executeWithProgressReporting = async (redisDbResult, jobDefinition) => {
   .then(async (result) => {
 
     if (result instanceof QueueError)
-      return spinner.info('Job aborted due to stop condition', 'Aborted');
+      return jobSummaryLine.info('Job aborted due to stop condition', 'Aborted');
 
     if (redisDbResult.status === 'ready') {
 
-      spinner.succeed('')
-      spinner.url = result.response.url;
+      jobSummaryLine.succeed({
+        text: '',
+        url: result.response.url,
+      })
       await redisDbResult.rpush('results', JSON.stringify(result))
 
     } else {
 
-      spinner.warn(`Finished after stop condition`)
-      spinner.url = result.response.url;
+      jobSummaryLine.warn({
+        text: `Finished after stop condition`,
+        url: result.response.url,
+      })
 
     }
 
@@ -127,10 +144,19 @@ const _executeWithProgressReporting = async (redisDbResult, jobDefinition) => {
   })
   .catch((e) => {
 
-    if (e.name === 'BrowserError')
-      return spinner.warn(`Request error:\n\t${e.message}`)
     
-    spinner.fail(`Internal error: ${e.message}`)
+      console.log(e.message);
+      console.log(e.stack);
+      process.exit(1);
+    
+    if (e.name === 'BrowserError')
+      return jobSummaryLine.warn({
+        text: `Request error:\n\t${e.message}`
+      });
+    
+      jobSummaryLine.fail({
+      text: `Internal error: ${e.message}`
+    })
     return;
 
   })
@@ -155,12 +181,25 @@ const start = async (filePath, bootstrap, reset) => {
     }));
 
     await redisDbResult.del('results');
+    let queueRefreshInterval;
+    
+    const term = startTerminal(async () => {
+      await redisDbQueue.quit();
+      await redisDbResult.quit();
+      await _reset(jobDefinition);
+      clearInterval(queueRefreshInterval);
+    });
+    const renderer = renderTerminal(term);
+  
+    renderer.summary.updateMessage('Starting');
 
-    _executeWithProgressReporting(redisDbResult, jobDefinition);
+    queueRefreshInterval = refreshQueue(redisDbQueue, jobDefinition, renderer)
+
+    _executeWithProgressReporting(redisDbResult, jobDefinition, renderer);
 
     await new Promise((resolve, reject) => {
 
-      const interval = setInterval(async () => {
+      const statusRefreshInterval = setInterval(async () => {
 
         const status = await redisDbQueue.hget(`sc:${jobDefinition.config.name}:state`, 'status')
         .catch(reject);
@@ -168,7 +207,8 @@ const start = async (filePath, bootstrap, reset) => {
         if (status !== 'INACTIVE')
           return;
 
-        clearInterval(interval);
+        clearInterval(statusRefreshInterval);
+        clearInterval(queueRefreshInterval);
         await redisDbQueue.quit();
         resolve();
 

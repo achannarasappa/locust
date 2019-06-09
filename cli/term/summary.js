@@ -136,6 +136,7 @@ const render = (term) => {
 
   const renderApi = _createRenderApi(term);
 
+  // TODO: Implement removal of listener
   term.on('resize', () => {
     renderApi.renderUI();
   })

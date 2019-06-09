@@ -1,4 +1,3 @@
-const chalk = require('chalk');
 const { ScreenBuffer, TextBuffer } = require('terminal-kit');
 
 const FRAMES = [
@@ -82,7 +81,7 @@ class JobSummary {
 
 	}
 	get url() {
-		return chalk.grey(this._url);
+		return this._url;
 	}
 	set url(v) {
 		this._url = v;
@@ -94,7 +93,7 @@ class JobSummary {
 		return this._text.padEnd(TEXT_LENGTH, ' ');
 	}
 	set text(v) {
-		this._text = v;
+		this._text = v || '';
 		this.redraw({
 			descriptionText: this.text,
 		});
@@ -139,60 +138,68 @@ class JobSummary {
 			urlText: this.url,
 		});
 	}
-	succeed(text, status) {
+	succeed({ text, status, url }) {
 
 		this.status = status || 'Done';
 		this.text = text;
+		this.url = url || this.url;
 		this.redraw({
 			indicatorChar: '✔',
 			indicatorColor: 'green',
 			statusText: this.status,
 			descriptionText: this.text,
+			urlText: this.url,
 		});
 		clearInterval(this.interval);
 
 		return this;
 
 	}
-	fail(text, status) {
+	fail({ text, status, url }) {
 
 		this.status = status || 'Done';
 		this.text = text;
+		this.url = url || this.url;
 		this.redraw({
 			indicatorChar: '✖',
 			indicatorColor: 'red',
 			statusText: this.status,
 			descriptionText: this.text,
+			urlText: this.url,
 		});
 		clearInterval(this.interval);
 
 		return this;
 
 	}
-	info(text, status) {
+	info({ text, status, url }) {
 
 		this.status = status || 'Done';
 		this.text = text;
+		this.url = url || this.url;
 		this.redraw({
 			indicatorChar: 'ℹ',
 			indicatorColor: 'blue',
 			statusText: this.status,
 			descriptionText: this.text,
+			urlText: this.url,
 		});
 		clearInterval(this.interval);
 
 		return this;
 
 	}
-	warn(text, status) {
+	warn({ text, status, url }) {
 
 		this.status = status || 'Done';
 		this.text = text;
+		this.url = url || this.url;
 		this.redraw({
 			indicatorChar: '⚠',
 			indicatorColor: 'yellow',
 			statusText: this.status,
 			descriptionText: this.text,
+			urlText: this.url,
 		});
 		clearInterval(this.interval);
 
