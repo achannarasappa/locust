@@ -1,5 +1,5 @@
 const chalk = require('chalk');
-require('draftlog').into(console).addLineListener(process.stdin);
+const DraftLog = require('draftlog');
 
 const FRAMES = [
 	'⠋',
@@ -14,60 +14,92 @@ const FRAMES = [
 	'⠏'
 ];
 
+const STATUS_LENGTH = 10;
+const TEXT_LENGTH = 35;
+
 class Spinner {
 
 	constructor(initialText) {
 
+		DraftLog(console).addLineListener(process.stdin);
 		this.frameIndex = 0;
-		this.text = initialText;
+		this._text = initialText;
+		this._status = 'Starting';
+		this._url = '';
 
+	}
+	get url() {
+		return chalk.grey(this._url);
+	}
+	set url(v) {
+		this._url = v;
+	}
+	get text() {
+		return chalk.grey(this._text.padEnd(TEXT_LENGTH, ' '));
+	}
+	set text(v) {
+		this._text = v;
+	}
+	get status() {
+		return this._status.padEnd(STATUS_LENGTH, ' ');
+	}
+	set status(v) {
+		this._status = v;
 	}
 	start() {
 	
-		this.update = console.draft(`${chalk.blue(FRAMES[0])} ${this.text}`);
+		this.update = console.draft(`${chalk.blue(FRAMES[0])} ${this.status} ${this.text} ${this.url}`);
 		this.interval = setInterval(() => {
 
 			this.frameIndex = (this.frameIndex >= FRAMES.length - 1)
 			? 0
 			: this.frameIndex + 1;
 	
-			this.update(`${chalk.blue(FRAMES[this.frameIndex])} ${this.text}`);
+			this.update(`${chalk.blue(FRAMES[this.frameIndex])} ${this.status} ${this.text} ${this.url}`);
 	
 		}, 80)
 
 		return this;
 	
 	}
-	succeed(text) {
+	succeed(text, status) {
 
-		this.update(`${chalk.green('✔')} ${text}`);
+		this.status = status || 'Done';
+		this.text = text;
+		this.update(`${chalk.green('✔')} ${this.status} ${this.text} ${this.url}`);
 		clearInterval(this.interval);
 		process.stdin.pause();
 
 		return this;
 		
 	}
-	fail(text) {
+	fail(text, status) {
 
-		this.update(`${chalk.red('✖')} ${text}`);
+		this.status = status || 'Done';
+		this.text = text;
+		this.update(`${chalk.red('✖')} ${this.status} ${this.text} ${this.url}`);
 		process.stdin.pause();
 		clearInterval(this.interval);
 
 		return this;
 		
 	}
-	info(text) {
+	info(text, status) {
 
-		this.update(`${chalk.blue('ℹ')} ${text}`);
+		this.status = status || 'Done';
+		this.text = text;
+		this.update(`${chalk.blue('ℹ')} ${this.status} ${this.text} ${this.url}`);
 		process.stdin.pause();
 		clearInterval(this.interval);
 
 		return this;
 		
 	}
-	warn(text) {
+	warn(text, status) {
 
-		this.update(`${chalk.yellow('⚠')} ${text}`);
+		this.status = status || 'Done';
+		this.text = text;
+		this.update(`${chalk.yellow('⚠')} ${this.status} ${this.text} ${this.url}`);
 		process.stdin.pause();
 		clearInterval(this.interval);
 

@@ -1,6 +1,11 @@
 #!/usr/bin/env node
 const yargs = require('yargs');
-const { run, start, stop, info, generateJobFile, validateJobFile } = require('../cli');
+const run = require('../cli/run');
+const start = require('../cli/start');
+const generate = require('../cli/generate');
+const validate = require('../cli/validate');
+const stop = require('../cli/stop');
+const info = require('../cli/info');
 
 yargs
   .scriptName('cli')
@@ -85,7 +90,7 @@ yargs
   })
   .command('generate', 'generate a job definition through a series of prompts', (yargs) => yargs, async () => {
 
-    return await generateJobFile();
+    return await generate();
 
   })
   .command('validate', 'validate a job definition', (yargs) => {
@@ -101,7 +106,7 @@ yargs
 
     }, async ({ _: [ cmd, filePath ] }) => {
       
-      return await validateJobFile(filePath);
+      return await validate(filePath);
   
     })
   
