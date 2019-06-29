@@ -100,7 +100,7 @@ class Line {
       }
   
       if (v === 'info') {
-        _redrawText(this.indicatorTextBuffer, 'ℹ', 'green');
+        _redrawText(this.indicatorTextBuffer, 'ℹ', 'blue');
         return;
       }
   

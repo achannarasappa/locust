@@ -54,14 +54,14 @@ const _renderSection = (term, title, y) => {
 
 };
 
-const _renderField = (term, y, x) => {
+const _renderField = (term, y, x, valueWidth = FIELD_TEXT_WIDTH) => {
 
   const screenBuffer = new ScreenBuffer({
     dst: term,
     y,
     x,
     height: 1,
-    width: (FIELD_TEXT_WIDTH * 2) + (FIELD_GAP_WIDTH * 2),
+    width: (FIELD_TEXT_WIDTH + valueWidth) + (FIELD_GAP_WIDTH * 2),
   });
   const keyTextBuffer = new TextBuffer({
     dst: screenBuffer,
@@ -70,7 +70,7 @@ const _renderField = (term, y, x) => {
   });
   const valueTextBuffer = new TextBuffer({
     dst: screenBuffer,
-    width: FIELD_TEXT_WIDTH,
+    width: valueWidth,
     x: FIELD_TEXT_WIDTH + (FIELD_GAP_WIDTH * 2),
   });
 
@@ -101,7 +101,7 @@ const _createRenderApi = (term) => {
     updateQueued: _renderField(term, QUEUE_SECTION_Y_POSITION + 3, FIELD_OFFSET_X)('Queued'),
     updateProcessing: _renderField(term, QUEUE_SECTION_Y_POSITION + 3, FIELD_OFFSET_X + (2 * FIELD_TEXT_WIDTH) + (FIELD_GAP_WIDTH * 2))('Processing'),
     updateDone: _renderField(term, QUEUE_SECTION_Y_POSITION + 3, FIELD_OFFSET_X + (4 * FIELD_TEXT_WIDTH) + (FIELD_GAP_WIDTH * 4))('Done'),
-    updateStatus: _renderField(term, QUEUE_SECTION_Y_POSITION + 6, FIELD_OFFSET_X)('Status'),
+    updateStatus: _renderField(term, QUEUE_SECTION_Y_POSITION + 6, FIELD_OFFSET_X, 100)('Status'),
     updateFirstRun: _renderField(term, QUEUE_SECTION_Y_POSITION + 6, FIELD_OFFSET_X + (2 * FIELD_TEXT_WIDTH) + (FIELD_GAP_WIDTH * 2))('First Run'),
   }
 
