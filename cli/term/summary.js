@@ -1,5 +1,5 @@
 const { ScreenBuffer, TextBuffer, terminal } = require('terminal-kit');
-const JobSummary = require('./job-summary');
+const { render: renderJobs } = require('./jobs');
 
 const MENU_HEIGHT = 1;
 const HEADER_HEIGHT = 16;
@@ -109,6 +109,8 @@ const _createRenderApi = (term) => {
     updateMessage: _renderField(term, SUMMARY_SECTION_Y_POSITION + 2, FIELD_OFFSET_X)('Status'),
   };
 
+  const job = renderJobs(term, HEADER_HEIGHT);
+
   return {
     renderUI,
     renderInitialUI: () => {
@@ -124,13 +126,12 @@ const _createRenderApi = (term) => {
     },
     queue,
     summary,
+    job,
   }
 
 };
 
 const render = (term) => {
-
-  let nextStatusY = HEADER_HEIGHT + MENU_HEIGHT;
 
   term.windowTitle('locust - summary');
 
@@ -143,10 +144,7 @@ const render = (term) => {
 
   renderApi.renderInitialUI();
 
-  return {
-    ...renderApi,
-    createJobSummary: () => new JobSummary(term, 'Starting...', nextStatusY++),
-  };
+  return renderApi;
 
 };
 

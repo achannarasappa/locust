@@ -21,17 +21,17 @@ const INDICATORS = {
   FAIL: 'fail',
   WARN: 'warn',
 };
+const TIME_TO_REMOVE_SUCCESSFUL_JOB = 2000;
 
 const INDICATOR_LENGTH = 2;
 const STATUS_LENGTH = 10;
 const TEXT_LENGTH = 35;
 
-const _redrawText = (screenBuffer, textBuffer, text, color = 'blue') => {
+const _redrawText = (textBuffer, text, color = 'blue') => {
 
   textBuffer.setText(text);
   textBuffer.setAttrRegion({ color })
   textBuffer.draw();
-  screenBuffer.draw({ delta: true });
 
 };
 
@@ -45,14 +45,15 @@ const _startInverval = (screenBuffer, indicatorTextBuffer) => {
       ? 0
       : frameIndex + 1;
 
-    _redrawText(screenBuffer, indicatorTextBuffer, FRAMES[frameIndex]);
+    _redrawText(indicatorTextBuffer, FRAMES[frameIndex]);
+    screenBuffer.draw({ delta: true });
 
   }, 80);
 
 };
 
 class Line {
-  constructor(screenBuffer, y, { url, indicator, status, description } = {}) {
+  constructor(screenBuffer, y, { url, indicator, status, description = '' } = {}) {
 
     this._y = y;
     this.screenBuffer = screenBuffer;
@@ -94,81 +95,89 @@ class Line {
       }
 
       if (v === 'success') {
-        _redrawText(this.screenBuffer, this.indicatorTextBuffer, '✔', 'green');
+        _redrawText(this.indicatorTextBuffer, '✔', 'green');
         return;
       }
   
       if (v === 'info') {
-        _redrawText(this.screenBuffer, this.indicatorTextBuffer, 'ℹ', 'green');
+        _redrawText(this.indicatorTextBuffer, 'ℹ', 'green');
         return;
       }
   
       if (v === 'fail') {
-        _redrawText(this.screenBuffer, this.indicatorTextBuffer, '✖', 'red');
+        _redrawText(this.indicatorTextBuffer, '✖', 'red');
         return;
       }
   
       if (v === 'warn') {
-        _redrawText(this.screenBuffer, this.indicatorTextBuffer, '⚠', 'yellow');
+        _redrawText(this.indicatorTextBuffer, '⚠', 'yellow');
         return;
       }
+
+      _redrawText(this.indicatorTextBuffer, '');
+      return;
     
     }
-    this.redrawStatus = (v) => _redrawText(this.screenBuffer, this.statusTextBuffer, v, 'white', y);
-    this.redrawDescription = (v) => _redrawText(this.screenBuffer, this.descriptionTextBuffer, v, 'gray');
-    this.redrawUrl = (v) => _redrawText(this.screenBuffer, this.urlTextBuffer, v, 'gray');
+    this.redrawStatus = (v) => _redrawText(this.statusTextBuffer, v, 'white');
+    this.redrawDescription = (v) => _redrawText(this.descriptionTextBuffer, v, 'gray');
+    this.redrawUrl = (v) => _redrawText(this.urlTextBuffer, v, 'gray');
 
-    this.update({ url, indicator, status, description });
+    this.indicator = indicator;
+    this.status = status;
+    this.description = description;
+    this.url = url;
+    this.screenBuffer.draw({ delta: true });
   }
   set indicator(v) {
 
-    this._indicator = v;
-
     this.redrawIndicator(v);
+    this._indicator = v;
+    this.screenBuffer.draw({ delta: true });
 
   }
   get indicator() { return this._indicator; }
   set status(v) {
     this._status = v;
     this.redrawStatus(v);
+    this.screenBuffer.draw({ delta: true });
   }
   get status () { return this._status; }
   set description(v) {
     this._description = v;
     this.redrawDescription(v);
+    this.screenBuffer.draw({ delta: true });
   }
   get description () { return this._description; }
   set url(v) {
     this._url = v;
     this.redrawUrl(v);
+    this.screenBuffer.draw({ delta: true });
   }
   get url () { return this._url; }
   set y(v) {
     this._y = v;
+    this.clear();
     this.indicatorTextBuffer.y = v;
     this.statusTextBuffer.y = v;
     this.descriptionTextBuffer.y = v;
     this.urlTextBuffer.y = v;
-    this.redraw();
+    this.redraw(this.indicator, this.status, this.description, this.url);
   }
   get y() { return this._y; }
-  update({ url, indicator, status, description }) {
-    this._indicator = indicator;
-    this._status = status;
-    this._description = description;
-    this._url = url;
-    this.redraw();
+  redraw(indicator, status, description, url) {
+    this.redrawIndicator(indicator);
+    this.redrawStatus(status);
+    this.redrawDescription(description);
+    this.redrawUrl(url);
+    this.indicatorTextBuffer.draw();
+    this.statusTextBuffer.draw();
+    this.descriptionTextBuffer.draw();
+    this.urlTextBuffer.draw();
   }
-  redraw() {
-    this.redrawIndicator(this._indicator);
-    this.redrawStatus(this._status);
-    this.redrawDescription(this._description);
-    this.redrawUrl(this._url);
-    debugger;
+  clear() {
+    this.redraw('', '', '', '');
   }
 }
-
-const _createLines = (screenBuffer) => Array(10).fill(0).map((v, i) => new Line(screenBuffer, i));
 
 const render = (term, y) => {
 
@@ -179,7 +188,7 @@ const render = (term, y) => {
 
   let lines = [];
 
-  return {
+  const renderer = {
     add: (job) => {
       lines.push(new Line(screenBuffer, lines.length, job));
     },
@@ -196,17 +205,26 @@ const render = (term, y) => {
   
       if (line.description !== description)
         line.description = description;
+
+      if (indicator === 'success')
+        setTimeout(() => {
+          renderer.remove(url);
+        
+        }, TIME_TO_REMOVE_SUCCESSFUL_JOB);
   
     }),
     remove: (url) => {
-      lines = R.reject((line) => line.url === url, lines)
-      lines = lines.map((line, i) => {
+      [ linesToRemove, linesToUpdate ] = R.partition((line) => line.url === url, lines)
+      linesToRemove.map((line) => line.clear());
+      lines = linesToUpdate.map((line, i) => {
         line.y = i;
         return line;
       });
-      lines.map((line) => line.redraw());
+      screenBuffer.draw({ delta: true });
     },
   };
+
+  return renderer;
   
 };
 
