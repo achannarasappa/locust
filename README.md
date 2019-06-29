@@ -1,4 +1,4 @@
-# serverless-crawler
+# locust
 
 Distributed serverless web crawling/web scraping with support for js execution, proxying, and autoscaling
 
@@ -30,7 +30,7 @@ Distributed serverless web crawling/web scraping with support for js execution, 
 
 ## Process Overview
 
-1. A job definition is packaged along with serverless-crawler for a cloud function provider and uploaded
+1. A job definition is packaged along with locust for a cloud function provider and uploaded
 1. The function is invoked which will start the crawl process
 1. Links matching the criteria in the job definition are returned along with optional data extracted from the page
 1. Function will recursively call itself with the links found until the deptch limit is met or a stop condition is encountered
