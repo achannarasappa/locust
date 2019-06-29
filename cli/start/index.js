@@ -1,4 +1,3 @@
-const prettyjson = require('prettyjson');
 const shell = require('shelljs');
 const R = require('ramda');
 const Redis = require('ioredis');
@@ -32,15 +31,10 @@ const _bootstrap = () => {
 
 };
 
-const _reset = async (jobDefinition) => {
+const _reset = async (redisDbQueue, redisDbResult, jobDefinition) => {
 
-  const redis = await new Redis(jobDefinition.connection.redis);
-
-  await queue.remove(redis, jobDefinition.config.name)
-
-  await redis.quit();
-
-  console.log(`Successfully reset queue '${jobDefinition.config.name}'`);
+  await queue.remove(redisDbQueue, jobDefinition.config.name);
+  await redisDbResult.del('results');
 
 }
 
@@ -51,9 +45,11 @@ const _getResults = async (redisDbResult) =>
 
 const _onExit = async (redisDbQueue, redisDbResult, jobDefinition) => {
 
-  await redisDbQueue.quit();
-  await redisDbResult.quit();
-  await _reset(jobDefinition);
+  if (redisDbQueue.status === 'ready') {
+    await queue.stop(redisDbQueue, jobDefinition.config.name);
+    await redisDbQueue.quit();
+  }
+  redisDbResult.status === 'ready' && await redisDbResult.quit();
 
 };
 
@@ -64,8 +60,6 @@ const start = async (filePath, bootstrap, reset) => {
   if (bootstrap)
     return _bootstrap();
 
-  if (reset)
-    await _reset(jobDefinition);
 
   try {
 
@@ -74,7 +68,8 @@ const start = async (filePath, bootstrap, reset) => {
       db: 1
     }));
 
-    await redisDbResult.del('results');
+
+    await _reset(redisDbQueue, redisDbResult, jobDefinition);
 
     await executeWithTerminalReporting(redisDbQueue, redisDbResult, jobDefinition, _onExit);
 
@@ -84,11 +79,17 @@ const start = async (filePath, bootstrap, reset) => {
 
     writeFileSync(`./results-${moment().format('YYYY-MM-DD-HH-mm-ss')}.json`, JSON.stringify(jobResults))
 
-    return console.log(`Completed with ${jobResults.length} results written to disk.`);
+    return;
   
   } catch (e) {
 
-    return console.log(prettyjson.render(e));
+    require('fs').appendFileSync('log.txt', [
+      '\n',
+      e.name,
+      e.url,
+      e.message,
+      e.stack,
+    ].join('\n'));
 
   }
 

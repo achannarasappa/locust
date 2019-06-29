@@ -54,7 +54,7 @@ const _renderSection = (term, title, y) => {
 
 };
 
-const _renderField = (term, y, x, valueWidth = FIELD_TEXT_WIDTH) => {
+const _renderField = (term, y, x, valueWidth) => {
 
   const screenBuffer = new ScreenBuffer({
     dst: term,
