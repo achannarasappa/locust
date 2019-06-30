@@ -1,3 +1,5 @@
 node_modules
 example
 .vscode
+coverage
+.nyc_output
