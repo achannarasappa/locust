@@ -21,6 +21,7 @@
     "docker-names": "^1.1.1",
     "eslint": "^6.0.1",
     "handlebars": "^4.1.2",
+    "husky": "^2.7.0",
     "mocha": "^5.2.0",
     "sinon": "^7.2.3"
   },
@@ -39,6 +40,11 @@
     },
     "rules": {
       "consistent-return": "off"
+    }
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint"
     }
   }
 }
