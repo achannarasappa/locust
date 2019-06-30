@@ -2,15 +2,13 @@
   "name": "locust",
   "version": "1.0.0",
   "description": "Distributed serverless web crawling/web scraping with support for js execution, proxying, and autoscaling",
-  "main": "lib/fn.js",
-  "bin": {
-    "cli": "bin/cli.js"
-  },
+  "main": "lib/index.js",
   "directories": {
     "example": "example",
     "lib": "lib"
   },
   "scripts": {
+    "lint": "eslint --fix ./lib",
     "test": "mocha --exit --grep @remote --invert --timeout 10000 './{,!(node_modules)/**/}*.spec.js'",
     "test:watch": "npm run test -- --watch"
   },
@@ -21,14 +19,26 @@
     "@hapi/vision": "^5.5.2",
     "chai": "^4.2.0",
     "docker-names": "^1.1.1",
+    "eslint": "^6.0.1",
     "handlebars": "^4.1.2",
     "mocha": "^5.2.0",
     "sinon": "^7.2.3"
   },
   "dependencies": {
+    "@achannarasappa/eslint-config": "^1.0.2",
     "ioredis": "^4.3.0",
     "joi": "^14.3.1",
     "puppeteer": "^1.18.1",
     "ramda": "^0.26.1"
+  },
+  "eslintConfig": {
+    "extends": "@achannarasappa/eslint-config",
+    "env": {
+      "mocha": true,
+      "node": true
+    },
+    "rules": {
+      "consistent-return": "off"
+    }
   }
 }
