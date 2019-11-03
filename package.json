@@ -1,7 +1,7 @@
 {
   "name": "locust",
   "version": "1.0.0",
-  "description": "Distributed serverless web crawling/web scraping with support for js execution, proxying, and autoscaling",
+  "description": "Distributed serverless web crawling/web scraping with support for js execution",
   "main": "lib/index.js",
   "directories": {
     "example": "example",
@@ -9,7 +9,8 @@
   },
   "scripts": {
     "coverage": "nyc --reporter=text --reporter=lcov npm test",
-    "lint": "eslint --fix ./lib",
+    "lint": "eslint ./lib",
+    "lint:fix": "eslint --fix ./lib",
     "test": "mocha --exit --grep @remote --invert --timeout 10000 './lib/*.spec.js'",
     "test:watch": "npm run test -- --watch"
   },
@@ -31,7 +32,7 @@
     "@achannarasappa/eslint-config": "^1.0.2",
     "ioredis": "^4.3.0",
     "joi": "^14.3.1",
-    "puppeteer": "^1.18.1",
+    "puppeteer-core": "^1.19.0",
     "ramda": "^0.26.1"
   },
   "eslintConfig": {
