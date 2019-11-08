@@ -29,7 +29,7 @@
     "sinon": "^7.2.3"
   },
   "dependencies": {
-    "@achannarasappa/eslint-config": "^1.0.2",
+    "@achannarasappa/eslint-config": "^1.0.4",
     "ioredis": "^4.3.0",
     "joi": "^14.3.1",
     "puppeteer-core": "^1.19.0",
