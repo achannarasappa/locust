@@ -26,6 +26,7 @@
     "husky": "^2.7.0",
     "mocha": "^5.2.0",
     "nyc": "^14.1.1",
+    "puppeteer": "^2.0.0",
     "sinon": "^7.2.3"
   },
   "dependencies": {

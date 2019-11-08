@@ -31,6 +31,21 @@ const addRoutes = async (server) => {
       }),
     }));
 
+  server.route({
+    method: 'GET',
+    path: '/page-fixture',
+    handler: (r, h) => h.view('page', {
+      title: 'page-fixture',
+      links: [
+        '/a',
+        '/b',
+        '/c',
+      ],
+      depth: 0,
+    }),
+
+  });
+
 };
 
 const init = async () => {
