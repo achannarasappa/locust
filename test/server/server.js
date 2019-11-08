@@ -11,47 +11,47 @@ const addRoutes = async (server) => {
 
   server.views({
     engines: { html: require('handlebars') },
-    path: __dirname + '/templates',
+    path: `${__dirname}/templates`,
   });
 
-  JSON.parse(readFileSync(__dirname + '/pages.json'))
-  .map(({ title, links, depth, path }) => {
-
-    server.route({
+  JSON.parse(readFileSync(`${__dirname}/pages.json`))
+    .map(({
+      title, links, depth, path,
+    }) => server.route({
       method: 'GET',
       path,
-      handler: (r, h) => new Promise((resolve, reject) => {
-        
+      handler: (r, h) => new Promise((resolve) => {
+
         setTimeout(() => resolve(h.view('page', {
           title,
           links,
           depth,
         })), Math.floor(Math.random() * (MAX_EXTRA_LATENCY - MIN_EXTRA_LATENCY + 1) + MIN_EXTRA_LATENCY));
 
-      })
-    });
-
-  });
+      }),
+    }));
 
 };
 
 const init = async () => {
 
   const server = Hapi.server({
-      port: 3001,
-      host: 'localhost'
+    port: 3001,
+    host: 'localhost',
   });
 
   await addRoutes(server);
 
   await server.start();
   console.log('Test server running on %s', server.info.uri);
+
 };
 
 process.on('unhandledRejection', (err) => {
 
   console.log(err);
   process.exit(1);
+
 });
 
 init();
