@@ -1,44 +1,15 @@
 # locust
 
-Distributed serverless web crawling/web scraping with support for js execution, proxying, and autoscaling
+Distributed web data discovery and collection framework
 
 ## Quick Start
 
-1. Generate a job definition
-    ```sh
-    cli generate my-job.js
-    ```
-1. Start the job
-    ```sh
-    cli run --bootstrap my-job.js
-    ```
+```
+npm install @achannarasappa/locust
+```
 
 ## Reference
 
-* Getting started
-* Concepts
-* API
-* CLI
-* Quick Starts
-    * AWS
-    * Google Cloud Platform
-    * Azure
-* Examples
-    * Basic example
-    * Login example
-    * Storing data example
-
-## Process Overview
-
-1. A job definition is packaged along with locust for a cloud function provider and uploaded
-1. The function is invoked which will start the crawl process
-1. Links matching the criteria in the job definition are returned along with optional data extracted from the page
-1. Function will recursively call itself with the links found until the deptch limit is met or a stop condition is encountered
-
-## Architecture
-
-A reference archtecture for a crawling system based on this project
-
-## Concepts
-
-* job definition - a javascript object defining a job to crawl a given site. also serves as the input into the crawler
+* [API](https://locust.dev/docs/api)
+* [CLI](https://locust.dev/docs/cli)
+* [locust.dev](https://locust.dev/)
