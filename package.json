@@ -8,7 +8,7 @@
     "lib": "lib"
   },
   "scripts": {
-    "coverage": "nyc --reporter=text --reporter=lcov npm test",
+    "coverage": "nyc --reporter=text --reporter=lcov mocha --exit --grep '@server' --invert --timeout 10000 './lib/*.spec.js'",
     "lint": "eslint ./lib",
     "lint:fix": "eslint --fix ./lib",
     "test": "mocha --exit --timeout 10000 './lib/*.spec.js'",
