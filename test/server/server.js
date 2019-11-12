@@ -34,15 +34,34 @@ const addRoutes = async (server) => {
   server.route({
     method: 'GET',
     path: '/page-fixture',
-    handler: (r, h) => h.view('page', {
-      title: 'page-fixture',
-      links: [
-        '/a',
-        '/b',
-        '/c',
-      ],
-      depth: 0,
-    }),
+    handler: (r, h) => {
+
+      const response = h.response(h.view('page', {
+        title: 'page-fixture',
+        links: [
+          '/a',
+          '/b',
+          '/c',
+        ],
+        depth: 0,
+      }));
+      response.header('x-custom-header', 'locust');
+      return response;
+
+    },
+
+  });
+
+  server.route({
+    method: 'GET',
+    path: '/page-fixture-error',
+    handler: (r, h) => {
+
+      const response = h.response('error');
+      response.code(500);
+      return response;
+
+    },
 
   });
 
