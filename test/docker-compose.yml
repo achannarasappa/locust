@@ -4,11 +4,16 @@ services:
     image: redis
     ports:
       - '6379:6379'
-    network_mode: "host"
+    network_mode: 'host'
   chrome:
     image: browserless/chrome
     ports:
       - '3000:3000'
     shm_size: '2gb'
     restart: always
-    network_mode: "host"
+    network_mode: 'host'
+  locust-test-server:
+    build: ./server
+    ports:
+      - '3001:3001'
+    network_mode: 'host'

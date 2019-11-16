@@ -1,7 +1,9 @@
 FROM node:dubnium-alpine
 
+WORKDIR /server
+
 COPY . .
 
-RUN npm install
+RUN npm install --production
 
 CMD npm start
