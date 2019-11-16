@@ -1,0 +1,10 @@
+dist: trusty
+language: node_js
+node_js:
+
+install:
+    - cd test && docker-compose up -d
+    - npm install
+
+script:
+    - npm run test
