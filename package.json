@@ -17,12 +17,8 @@
   "author": "Ani Channarasappa",
   "license": "MIT",
   "devDependencies": {
-    "@hapi/hapi": "^18.4.0",
-    "@hapi/vision": "^5.5.2",
     "chai": "^4.2.0",
-    "docker-names": "^1.1.1",
     "eslint": "^6.0.1",
-    "handlebars": "^4.5.1",
     "husky": "^2.7.0",
     "mocha": "^5.2.0",
     "nyc": "^14.1.1",

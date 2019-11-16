@@ -1,0 +1,20 @@
+{
+  "name": "locust-test-server",
+  "version": "1.0.0",
+  "description": "Server running a collection of pages for locust to be run again",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "Ani Channarasappa",
+  "license": "MIT",
+  "dependencies": {
+    "@hapi/hapi": "^18.4.0",
+    "@hapi/vision": "^5.5.4",
+    "handlebars": "^4.5.2"
+  },
+  "devDependencies": {
+    "docker-names": "^1.1.1"
+  }
+}
