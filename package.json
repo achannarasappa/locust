@@ -9,6 +9,7 @@
   },
   "scripts": {
     "coverage": "nyc --reporter=text --reporter=lcov mocha --exit --grep '@server' --invert --timeout 10000 './lib/*.spec.js'",
+    "coverage:coveralls": "npm run coverage && ./node_modules/.bin/nyc report --reporter=text-lcov | coveralls",
     "lint": "eslint ./lib",
     "lint:fix": "eslint --fix ./lib",
     "test": "mocha --exit --timeout 10000 './lib/*.spec.js'",
@@ -18,6 +19,7 @@
   "license": "MIT",
   "devDependencies": {
     "chai": "^4.2.0",
+    "coveralls": "^3.0.7",
     "eslint": "^6.0.1",
     "husky": "^2.7.0",
     "mocha": "^5.2.0",
