@@ -1,6 +1,6 @@
 {
   "name": "@achannarasappa/locust",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Distributed serverless web crawling/web scraping with support for js execution",
   "main": "lib/index.js",
   "directories": {
