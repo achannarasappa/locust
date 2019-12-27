@@ -1,10 +1,10 @@
-<p align="center">
-  <h1>Locust</h1>
-  <img style="height:100px;margin:0.5rem 0;" src="https://locust.dev/img/locust-logo.svg" />
-  <div>Distributed web data discovery and collection framework</div>
-</p>
+<table align="center"><tr><td align="center" width="9999">
+<img align="center" width="100" src="https://locust.dev/img/locust-logo.svg" />
 
-----
+# Locust
+
+Distributed web data discovery and collection framework
+</td></tr></table>
 
 [![Build Status](https://travis-ci.com/achannarasappa/locust.svg?branch=master)](https://travis-ci.com/achannarasappa/locust) [![Coverage Status](https://coveralls.io/repos/github/achannarasappa/locust/badge.svg?branch=master)](https://coveralls.io/github/achannarasappa/locust?branch=master)
 
