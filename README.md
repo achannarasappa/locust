@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/achannarasappa/locust.svg?branch=master)](https://travis-ci.com/achannarasappa/locust) [![Coverage Status](https://coveralls.io/repos/github/achannarasappa/locust/badge.svg?branch=master)](https://coveralls.io/github/achannarasappa/locust?branch=master)
+
 <p align="center">
 <img align="center" width="100" src="https://locust.dev/img/locust-logo.svg" />
 </p>
@@ -5,8 +7,6 @@
 <p align="center">
 Distributed web data discovery and collection framework
 </p>
-
-[![Build Status](https://travis-ci.com/achannarasappa/locust.svg?branch=master)](https://travis-ci.com/achannarasappa/locust) [![Coverage Status](https://coveralls.io/repos/github/achannarasappa/locust/badge.svg?branch=master)](https://coveralls.io/github/achannarasappa/locust?branch=master)
 
 ## Quick Start
 
