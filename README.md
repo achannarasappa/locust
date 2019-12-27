@@ -14,6 +14,20 @@ Distributed web data discovery and collection framework
 npm install @achannarasappa/locust
 ```
 
+## Features
+
+* Configuration driven jobs
+* Distributed execution model to support serverless architectures
+* Handle client-side JavaScript execution
+* Data extraction using CSS selectors
+* Depth-based stop condition along with support for custom stop conditions
+* Robust dev tooling with [locust-cli](https://github.com/achannarasappa/locust-cli) to build and test jobs
+
+## Use Cases
+
+* Web indexing (i.e. web crawling)
+* Web data extraction (i.e. web scraping)
+
 ## Reference
 
 * Documentation
