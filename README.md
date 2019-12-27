@@ -12,6 +12,12 @@ npm install @achannarasappa/locust
 
 ## Reference
 
-* [API](https://locust.dev/docs/api)
-* [CLI](https://locust.dev/docs/cli)
-* [locust.dev](https://locust.dev/)
+* Documentation
+  * [Quick start guide](https://locust.dev/docs/getting_started)
+  * [API](https://locust.dev/docs/api)
+  * [CLI](https://locust.dev/docs/cli)
+* [Examples](https://github.com/achannarasappa/locust-examples)
+* Related
+  * [locust-cli](https://github.com/achannarasappa/locust-cli)
+  * [locust-aws-terraform](https://github.com/achannarasappa/locust-aws-terraform)
+  * [locust-website](https://github.com/achannarasappa/locust-website)
