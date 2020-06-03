@@ -71,7 +71,7 @@ const init = async () => {
 
   const server = Hapi.server({
     port: 3001,
-    host: 'localhost',
+    host: '0.0.0.0',
   });
 
   await addRoutes(server);
