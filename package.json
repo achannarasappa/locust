@@ -35,7 +35,8 @@
     "ioredis": "^4.14.1",
     "joi": "^14.3.1",
     "puppeteer-core": "^2.0.0",
-    "ramda": "^0.26.1"
+    "ramda": "^0.26.1",
+    "winston": "^3.2.1"
   },
   "eslintConfig": {
     "extends": "@achannarasappa/eslint-config",
