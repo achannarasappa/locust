@@ -10,9 +10,9 @@
   "author": "Ani Channarasappa",
   "license": "MIT",
   "dependencies": {
-    "@hapi/hapi": "^18.4.0",
+    "@hapi/hapi": "^18.4.1",
     "@hapi/vision": "^5.5.4",
-    "handlebars": "^4.5.2"
+    "handlebars": "^4.7.6"
   },
   "devDependencies": {
     "docker-names": "^1.1.1"
